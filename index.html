@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scapy - Python Packet Sniffer and Network Exploration Tool</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="Designer.png" type="image/x-icon">
+    <style>
+        /* Global styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            padding-top: 70px; /* Prevent content from hiding behind sticky navbar */
+            overflow-x: hidden; /* Prevent horizontal overflow */
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            animation: slideInDown 1s ease-out;
+        }
+
+        @keyframes slideInDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #33cc33;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            background-color: #fff;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section:nth-child(odd) {
+            animation-delay: 0.6s;
+        }
+
+        section h1, section h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        section p {
+            margin-bottom: 15px;
+        }
+
+        button, a.button-link {
+            background-color: #33cc33;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover, a.button-link:hover {
+            background-color: #28a745;
+            transform: translateY(-5px);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 5px 0;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 5px;
+            display: block;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        #disclaimer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        #disclaimer.show {
+            display: flex;
+        }
+
+        #disclaimer h2 {
+            margin-bottom: 20px;
+        }
+
+        #disclaimer button {
+            background-color: #33cc33;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #disclaimer button:hover {
+            background-color: #28a745;
+        }
+
+        #content {
+            display: none;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            main {
+                padding: 10px;
+            }
+
+            section {
+                margin: 10px 0;
+                padding: 15px;
+            }
+
+            button, a.button-link {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                font-size: 14px;
+            }
+
+            nav ul li a {
+                font-size: 14px;
+            }
+
+            button, a.button-link {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Disclaimer Section -->
+    <div id="disclaimer" role="dialog" aria-labelledby="disclaimer-heading">
+        <div>
+            <h2 id="disclaimer-heading">Disclaimer</h2>
+            <p>This website contains information about network tools and techniques. Use this knowledge responsibly and ethically. Unauthorized use of this information is illegal and punishable by law.</p>
+            <button id="accept">I Understand and Enter</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#documentation">Documentation</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="#learn">Learn Scapy</a></li>
+                    <li><a href="#examples">Scapy Code Examples</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="hero">
+                <h1>Scapy - Unleash the Power of Network Exploration</h1>
+                <p>Scapy is a Python-based packet sniffer and network exploration tool that allows you to capture, analyze, and manipulate network traffic.</p>
+                <a href="scapy.html" class="button-link">Get Started</a>
+            </section>
+
+            <section id="features">
+                <h2>Features</h2>
+                <ul>
+                    <li>Packet sniffing and capture</li>
+                    <li>Network protocol analysis</li>
+                    <li>Packet manipulation and injection</li>
+                    <li>Support for multiple network interfaces</li>
+                    <li>Creating and sending packets</li>
+                    <li>Sniffing network packets</li>
+                    <li>Analyzing packet captures</li>
+                    <li>Crafting SYN packets</li>
+                    <li>Port scanning</li>
+                    <li>Man-in-the-middle attacks (ethical use only)</li>
+                </ul>
+            </section>
+
+            <section id="documentation">
+                <h2>Documentation</h2>
+                <p>Get started with Scapy by reading our comprehensive documentation, including tutorials, guides, and API references.</p>
+                <a href="#" class="button-link">Read the Docs</a>
+            </section>
+
+            <section id="community">
+                <h2>Community</h2>
+                <p>Join our community of developers, researchers, and security professionals to discuss Scapy, share knowledge, and collaborate on projects.</p>
+                <a href="#" class="button-link">Join the Community</a>
+            </section>
+
+            <section id="learn">
+                <h2>Learn Scapy</h2>
+                <p>Get started with Scapy by following our tutorials and guides, designed to help you learn Scapy from scratch.</p>
+                <ul>
+                    <li><a href="#">Scapy Basics</a></li>
+                    <li><a href="#">Packet Sniffing and Capture</a></li>
+                    <li><a href="#">Packet Manipulation and Injection</a></li>
+                    <li><a href="#">Network Protocol Analysis</a></li>
+                    <li><a href="#">Advanced Scapy Techniques</a></li>
+                </ul>
+            </section>
+
+            <section id="examples">
+                <h2>Scapy Code Examples</h2>
+                <p>Explore our collection of Scapy code examples, demonstrating various use cases and techniques.</p>
+                <ul>
+                    <li><a href="#">Packet Sniffing Example</a></li>
+                    <li><a href="#">Network Scan Example</a></li>
+                    <li><a href="#">ARP Spoofing Example</a></li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Scapy. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript for Disclaimer -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force show the disclaimer
+            document.getElementById('disclaimer').style.display = 'flex';
+            document.getElementById('content').style.display = 'none';
+    
+            document.getElementById('accept').addEventListener('click', function() {
+                // Save disclaimer acceptance
+                localStorage.setItem('disclaimerAccepted', 'true');
+                document.getElementById('disclaimer').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
